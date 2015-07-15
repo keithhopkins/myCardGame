@@ -207,6 +207,9 @@ function fullHouse(array){
               tempHand.splice(k-2,1);
               j+=100;
               i+=100;
+              if (containsPair(tempHand)){
+                return true;
+              }//three of a kind has been removed, much check if remaining cards are a pair
               break;
             }
           }
@@ -215,9 +218,6 @@ function fullHouse(array){
       }
       i++;
     }
-    if (containsPair(tempHand)){
-      return true;
-    }//three of a kind has been removed, much check if remaining cards are a pair
   }
   return false;
 }
@@ -291,11 +291,11 @@ function loseMessage(){
 }
 
 
-hand = dealHand(deck,5);
-displayHand(hand);
-scoreHand(hand);
+// hand = dealHand(deck,5);
+// displayHand(hand);
+// scoreHand(hand);
 
-// //testing functions
-// var testHand = [deck[12],deck[11],deck[10],deck[9],deck[13]];
-// displayHand(testHand);
-// scoreHand(testHand);
+//testing functions
+var testHand = [deck[18],deck[14],deck[9],deck[40],deck[27]];
+displayHand(testHand);
+scoreHand(testHand);
