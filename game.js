@@ -290,12 +290,16 @@ function loseMessage(){
   }
 }
 
+function playGame(){
+  var hand = dealHand(deck,5);
+  displayHand(hand);
+  scoreHand(hand);
+}
 
-// hand = dealHand(deck,5);
-// displayHand(hand);
-// scoreHand(hand);
+playGame();
 
-//testing functions
-var testHand = [deck[18],deck[14],deck[9],deck[40],deck[27]];
-displayHand(testHand);
-scoreHand(testHand);
+
+// //testing functions
+// var testHand = [deck[18],deck[14],deck[9],deck[40],deck[27]];
+// displayHand(testHand);
+// scoreHand(testHand);
