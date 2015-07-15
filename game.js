@@ -76,30 +76,56 @@ function displayHand(array){
 //scores the hand
 //currently only checks if the hand has a pair
 function scoreHand(array) {
+  if (contains2Pair(array)){
+    console.log("You got 2 pair!");
+    return true;
+  }
   if (containsPair(array)) {
-   console.log("You won!")
+   console.log("You got a pair!");
    return true;
-  } else {
+  }
    loseMessage();
    return false;
-  }
 }
 
 //checks to see if that hand contains a pair
 function containsPair(array){
-  var contains = false;
   for(var i=0;i<array.length;i++){
     for(var k=0;k<array.length;k++){
       //first condition checks if 2 cards in the hand have the same value
       //second condition ensures that we aren't checking the same card
       if(array[i].weight===array[k].weight&&array[i].name!==array[k].name){
-        contains=true;
+        return true;
       }
     }
   }
-  return contains;
+  return false;
 }
 
+function contains2Pair(array){
+  var tempHand = array.slice();
+  if (containsPair(array)){//checks if the hand has a pair, if it does go and remove the pair cards.
+    var i=0;
+    while(i<tempHand.length){
+      for(var k=0;k<tempHand.length;k++){
+        //first condition checks if 2 cards in the hand have the same value
+        //second condition ensures that we aren't checking the same card
+        if(tempHand[i].weight===tempHand[k].weight&&tempHand[i].name!==tempHand[k].name){
+          //remove the 2 cards from our tempHand
+          tempHand.splice(i,1);
+          i=tempHand.length+1;
+          tempHand.splice(k-1,1);
+          break;
+        }
+      }
+      i++;
+    }
+    if(containsPair(tempHand)){
+      return true;
+    }
+  }
+  return false;
+}
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
@@ -118,6 +144,9 @@ function loseMessage(){
 }
 
 
-hand = dealHand(deck,5);
-displayHand(hand);
-scoreHand(hand);
+// hand = dealHand(deck,5);
+// displayHand(hand);
+// scoreHand(hand);
+var testHand = [deck[0],deck[1],deck[13],deck[18],deck[14]];
+displayHand(testHand);
+scoreHand(testHand);
