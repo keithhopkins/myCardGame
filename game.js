@@ -76,6 +76,10 @@ function displayHand(array){
 //scores the hand
 //currently only checks if the hand has a pair
 function scoreHand(array) {
+  if (flush(array)){
+    console.log("You got a flush");
+    return true;
+  }
   if (fullHouse(array)){
     console.log("You got a full house");
     return true;
@@ -100,7 +104,7 @@ function scoreHand(array) {
    return false;
 }
 
-//checks to see if that hand contains a pair
+//checks for a pair
 function containsPair(array){
   for(var i=0;i<array.length;i++){
     for(var k=0;k<array.length;k++){
@@ -114,7 +118,7 @@ function containsPair(array){
   return false;
 }
 
-//checks the hand to see if it has 2 pair
+//checks for 2 pair
 function contains2Pair(array){
   var tempHand = array.slice();
   if (containsPair(array)){//checks if the hand has a pair, if it does go and remove the pair cards
@@ -140,7 +144,7 @@ function contains2Pair(array){
   return false;
 }
 
-//checks the hand to see if it contains a 3 of a kind
+//checks for a 3 of a kind
 function threeOfAKind(array){
   for (var i=0;i<array.length;i++){
     for(var k=i+1;k<array.length;k++){
@@ -156,7 +160,7 @@ function threeOfAKind(array){
   return false;
 }
 
-//checks to see if the hand contains a 4 of a kind
+//checks for a 4 of a kind
 function fourOfAKind(array){
   for (var i=0;i<array.length;i++){
     for (var k=i+1;k<array.length;k++){
@@ -175,7 +179,7 @@ function fourOfAKind(array){
   }
 }
 
-//checks to see if the hand contains a full house
+//checks for a full house
 function fullHouse(array){
   if(threeOfAKind(array)){
     var tempHand = array.slice();
@@ -206,6 +210,19 @@ function fullHouse(array){
   return false;
 }
 
+//checks for a flush
+function flush(array){
+  for(var i=0;i<array.length-1;i++){
+    if(array[i].suit===array[i+1].suit){ //checks if the current card has the same suit as the next card
+      if(i===array.length-2){ //if its checking the last 2 cards returns true
+        return true;
+      }
+      continue;
+    } else { //returns false if at any point 2 cards don't have the same suit
+      return false;
+    }
+  }
+}
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
@@ -227,6 +244,6 @@ function loseMessage(){
 // hand = dealHand(deck,5);
 // displayHand(hand);
 // scoreHand(hand);
-var testHand = [deck[0],deck[26],deck[13],deck[18],deck[5]];
+var testHand = [deck[0],deck[1],deck[2],deck[3],deck[5]];
 displayHand(testHand);
 scoreHand(testHand);
