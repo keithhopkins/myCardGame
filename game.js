@@ -76,7 +76,10 @@ function displayHand(array){
 //scores the hand
 //currently only checks if the hand has a pair
 function scoreHand(array) {
-  
+  if(straightFlush(array)){
+    console.log("You got a straight flush!");
+    return true;
+  }
   if(straight(array)){
     console.log("You got a straight!");
     return true;
@@ -234,7 +237,6 @@ function flush(array){
 function straight(array){
   var tempHand = array.slice();
   tempHand.sort(function (a, b){return a.weight - b.weight}); //sorts array by card weight
-  console.log(tempHand);
   for(var i=0;i<tempHand.length-1;i++){
     if(tempHand[i].weight+1===tempHand[i+1].weight){
       if(i===array.length-2){
@@ -246,6 +248,15 @@ function straight(array){
     }
   }
 }
+
+//checks for straight flush
+function straightFlush(array){
+  if (flush(array)&&straight(array)){
+    return true;
+  }
+  return false;
+}
+
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
