@@ -265,7 +265,7 @@ function straightFlush(array){
 
 //checks for royal flush
 function royalFlush(array){
-  if(straightFlush){
+  if(straightFlush(array)){
     var tempHand=array.slice();
     tempHand.sort(function (a, b){return a.weight - b.weight});
     if(tempHand[0].weight===1&&tempHand[1].weight===10){
@@ -291,9 +291,11 @@ function loseMessage(){
 }
 
 
-// hand = dealHand(deck,5);
-// displayHand(hand);
-// scoreHand(hand);
-var testHand = [deck[12],deck[11],deck[10],deck[9],deck[0]];
-displayHand(testHand);
-scoreHand(testHand);
+hand = dealHand(deck,5);
+displayHand(hand);
+scoreHand(hand);
+
+// //testing functions
+// var testHand = [deck[12],deck[11],deck[10],deck[9],deck[13]];
+// displayHand(testHand);
+// scoreHand(testHand);
