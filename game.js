@@ -76,6 +76,10 @@ function displayHand(array){
 //scores the hand
 //currently only checks if the hand has a pair
 function scoreHand(array) {
+  if (fullHouse(array)){
+    console.log("You got a full house");
+    return true;
+  }
   if (fourOfAKind(array)){
     console.log("You got 4 of a kind");
     return true;
@@ -171,6 +175,37 @@ function fourOfAKind(array){
   }
 }
 
+//checks to see if the hand contains a full house
+function fullHouse(array){
+  if(threeOfAKind(array)){
+    var tempHand = array.slice();
+    var i = 0;
+    while (i<tempHand.length){
+      var j = i+1;
+      while (j<tempHand.length){
+        if (tempHand[i].name===tempHand[j].name){
+          for (var k=j+1;k<tempHand.length;k++){
+            if(tempHand[i].name===tempHand[k].name){
+              tempHand.splice(i,1);
+              tempHand.splice(j-1,1);
+              tempHand.splice(k-2,1);
+              j+=100;
+              i+=100;
+              break;
+            }
+          }
+        }
+        j++;
+      }
+      i++;
+    }
+    if (containsPair(tempHand)){
+      return true;
+    }//three of a kind has been removed, much check if remaining cards are a pair
+  }
+  return false;
+}
+
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
@@ -192,6 +227,6 @@ function loseMessage(){
 // hand = dealHand(deck,5);
 // displayHand(hand);
 // scoreHand(hand);
-var testHand = [deck[0],deck[26],deck[13],deck[18],deck[39]];
+var testHand = [deck[0],deck[26],deck[13],deck[18],deck[5]];
 displayHand(testHand);
 scoreHand(testHand);
