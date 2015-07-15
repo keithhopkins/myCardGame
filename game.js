@@ -76,6 +76,10 @@ function displayHand(array){
 //scores the hand
 //currently only checks if the hand has a pair
 function scoreHand(array) {
+  if (threeOfAKind(array)){
+    console.log("You got 3 of a kind");
+    return true;
+  }
   if (contains2Pair(array)){
     console.log("You got 2 pair!");
     return true;
@@ -102,9 +106,10 @@ function containsPair(array){
   return false;
 }
 
+//checks the hand to see if it has 2 pair
 function contains2Pair(array){
   var tempHand = array.slice();
-  if (containsPair(array)){//checks if the hand has a pair, if it does go and remove the pair cards.
+  if (containsPair(array)){//checks if the hand has a pair, if it does go and remove the pair cards
     var i=0;
     while(i<tempHand.length){
       for(var k=0;k<tempHand.length;k++){
@@ -126,6 +131,23 @@ function contains2Pair(array){
   }
   return false;
 }
+
+//checks the hand to see if it contains a three of a kind
+function threeOfAKind(array){
+  for (var i=0;i<array.length;i++){
+    for(var k=i+1;k<array.length;k++){
+      if(array[i].weight===array[k].weight&&array[i].name!==array[k].name){  //checks if 2 cards are the same
+        for (var j=k+1;j<array.length;j++){  //moves to check if any of the rest of the cards match the pair
+          if(array[i].weight===array[j].weight&&array[i].name!==array[j].name){
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
+
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
@@ -147,6 +169,6 @@ function loseMessage(){
 // hand = dealHand(deck,5);
 // displayHand(hand);
 // scoreHand(hand);
-var testHand = [deck[0],deck[1],deck[13],deck[18],deck[14]];
+var testHand = [deck[0],deck[26],deck[13],deck[18],deck[14]];
 displayHand(testHand);
 scoreHand(testHand);
