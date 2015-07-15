@@ -76,6 +76,10 @@ function displayHand(array){
 //scores the hand
 //currently only checks if the hand has a pair
 function scoreHand(array) {
+  if(royalFlush(array)){
+    console.log("HOLY SHIT YOU GOT A ROYAL FLUSH");
+    return true;
+  }
   if(straightFlush(array)){
     console.log("You got a straight flush!");
     return true;
@@ -238,7 +242,9 @@ function straight(array){
   var tempHand = array.slice();
   tempHand.sort(function (a, b){return a.weight - b.weight}); //sorts array by card weight
   for(var i=0;i<tempHand.length-1;i++){
-    if(tempHand[i].weight+1===tempHand[i+1].weight){
+    //checks if the card to the right of this card is sequetial
+    //special case: if the first card is an ace and the second is a 10 it is still true
+    if(tempHand[i].weight+1===tempHand[i+1].weight||(tempHand[0].weight===1&&tempHand[1].weight===10)){
       if(i===array.length-2){
         return true;
       }
@@ -257,6 +263,16 @@ function straightFlush(array){
   return false;
 }
 
+//checks for royal flush
+function royalFlush(array){
+  if(straightFlush){
+    var tempHand=array.slice();
+    tempHand.sort(function (a, b){return a.weight - b.weight});
+    if(tempHand[0].weight===1&&tempHand[1].weight===10){
+      return true;
+    }
+  }
+}
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
@@ -278,6 +294,6 @@ function loseMessage(){
 // hand = dealHand(deck,5);
 // displayHand(hand);
 // scoreHand(hand);
-var testHand = [deck[2],deck[5],deck[3],deck[1],deck[4]];
+var testHand = [deck[12],deck[11],deck[10],deck[9],deck[0]];
 displayHand(testHand);
 scoreHand(testHand);
