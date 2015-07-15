@@ -52,6 +52,7 @@ var deck =  [{ code: "U+1F0A1", weight: 1, name: "Ace of Spades", suit: "Spades"
             { code:'U+1F0DE', weight: 13, name:'King of Clubs', suit:'Clubs'}
           ];
 
+//deals a hand, functions the same way as the _.sample function
 function dealHand(array, num){
   var arrayCopy = array.slice();
   if(num===undefined) {
@@ -64,30 +65,41 @@ function dealHand(array, num){
   }
   return randArray;
 }
-function contains(array, card){
-  var contains=false;
-  for(var i=0;i<array.length;i++)
-    if(array[i].weight===card.weight)
-      contains=true;
+
+//checks to see if that hand contains a pair
+function containsPair(array){
+  var contains = false;
+  for(var i=0;i<array.length;i++){
+    for(var k=0;k<array.length;k++){
+      //first condition checks if 2 cards in the hand have the same value
+      //second condition ensures that we aren't checking the same card
+      if(array[i].weight===array[k].weight&&array[i].name!==array[k].name){
+        contains=true;
+      }
+    }
+  }
   return contains;
 }
-// function scoreHand(array) {
-//   if (array[0].weight === array[1].weight) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// }
-function scoreHand(array) {
-  console.log("You were dealt " + array[0].name +" and "+ array[1].name);
-  if (array[0].weight === array[1].weight) {
-   console.log("You fucking won!")
-   return true;
-  } else {
-   message();
+//displays the hand to the console.
+function displayHand(array){
+  console.log('Your hand is:');
+  for(var i=0;i<array.length;i++){
+    console.log(array[i].name);
   }
 }
-function message(){
+//scores the hand
+//currently only checks if the hand has a pair
+function scoreHand(array) {
+  if (containsPair(array)) {
+   console.log("You won!")
+   return true;
+  } else {
+   loseMessage();
+   return false;
+  }
+}
+//displays a message that you lost the hand to the console
+function loseMessage(){
   switch(Math.floor(Math.random()*5)){
     case 1: {console.log("You are terrible at this");}
             break;
@@ -104,14 +116,6 @@ function message(){
 }
 
 
-hand = dealHand(deck,2);
-console.log("Your hand is:");
-for(var i =0;i<hand.length;i++){
-  console.log(hand[i].name);
-}
-var pair = scoreHand(hand);
-// if(pair){
-//   console.log("You got a hand");
-// } else {
-//   console.log("You didn't get a pair");
-// }
+hand = dealHand(deck,5);
+displayHand(hand);
+scoreHand(hand);
