@@ -64,10 +64,10 @@ function dealHand(array, num){
   }
   return randArray;
 }
-function contains(array, num){
+function contains(array, card){
   var contains=false;
   for(var i=0;i<array.length;i++)
-    if(array[i].weight===num)
+    if(array[i].weight===card.weight)
       contains=true;
   return contains;
 }
@@ -79,27 +79,29 @@ function contains(array, num){
 //   }
 // }
 function scoreHand(array) {
- console.log("You were dealt " + array[0].name +" and "+ array[1].name);
- if (array[0].weight === array[1].weight) {
+  console.log("You were dealt " + array[0].name +" and "+ array[1].name);
+  if (array[0].weight === array[1].weight) {
    console.log("You fucking won!")
    return true;
- } else {
-   switch(Math.floor(Math.random()*5)){
-     case 1: {console.log("You are terrible at this");}
-             break;
-     case 2: {console.log("Really?");}
-             break;
-     case 3: {console.log("You should just give up.");}
-             break;
-     case 4: {console.log("Wow, still nothing?");}
-             break;
-     case 5: {console.log("Just kill yourself");}
-             break;
-   }
-   return false;
- }
+  } else {
+   message();
+  }
 }
-
+function message(){
+  switch(Math.floor(Math.random()*5)){
+    case 1: {console.log("You are terrible at this");}
+            break;
+    case 2: {console.log("Really?");}
+            break;
+    case 3: {console.log("You should just give up.");}
+            break;
+    case 4: {console.log("Wow, still nothing?");}
+            break;
+    case 5: {console.log("Just kill yourself");}
+            break;
+    default: {console.log("Your score is bad and you should feel bad!")}
+  }
+}
 
 
 hand = dealHand(deck,2);
