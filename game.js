@@ -65,6 +65,25 @@ function dealHand(array, num){
   }
   return randArray;
 }
+//displays the hand to the console.
+function displayHand(array){
+  console.log('Your hand is:');
+  for(var i=0;i<array.length;i++){
+    console.log(array[i].name);
+  }
+}
+
+//scores the hand
+//currently only checks if the hand has a pair
+function scoreHand(array) {
+  if (containsPair(array)) {
+   console.log("You won!")
+   return true;
+  } else {
+   loseMessage();
+   return false;
+  }
+}
 
 //checks to see if that hand contains a pair
 function containsPair(array){
@@ -80,24 +99,7 @@ function containsPair(array){
   }
   return contains;
 }
-//displays the hand to the console.
-function displayHand(array){
-  console.log('Your hand is:');
-  for(var i=0;i<array.length;i++){
-    console.log(array[i].name);
-  }
-}
-//scores the hand
-//currently only checks if the hand has a pair
-function scoreHand(array) {
-  if (containsPair(array)) {
-   console.log("You won!")
-   return true;
-  } else {
-   loseMessage();
-   return false;
-  }
-}
+
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
