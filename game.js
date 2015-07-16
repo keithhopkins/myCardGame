@@ -1,4 +1,5 @@
-var deck =  [{ code: "&#x1F0A1", weight: 1, name: "Ace of Spades", suit: "Spades"},
+var deck =  [
+            { code: "&#x1F0A1", weight: 1, name: "Ace of Spades", suit: "Spades"},
             { code: "&#x1F0A2", weight: 2, name: "Two of Spades", suit: "Spades"},
             { code: "&#x1F0A3", weight: 3, name: "Three of Spades", suit: "Spades"},
             { code: "&#x1F0A4", weight: 4, name: "Four of Spades", suit: "Spades"},
@@ -67,9 +68,9 @@ function dealHand(array, num){
 }
 //displays the hand to the console.
 function displayHand(array){
-  console.log('Your hand is:');
-  for(var i=0;i<array.length;i++){
-    console.log(array[i].name);
+  var cardSpace = document.getElementById("cardSpace");
+  for( i in array) {
+    cardSpace.innerHTML += array[i].code;
   }
 }
 
@@ -273,33 +274,56 @@ function royalFlush(array){
     }
   }
 }
+
 //displays a message that you lost the hand to the console
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
-    case 1: {console.log("You are terrible at this");}
-            break;
-    case 2: {console.log("Really?");}
-            break;
-    case 3: {console.log("You should just give up.");}
-            break;
-    case 4: {console.log("Wow, still nothing?");}
-            break;
-    case 5: {console.log("Just kill yourself");}
-            break;
-    default: {console.log("Your score is bad and you should feel bad!")}
+    case 1: return "You are terrible at this";
+    case 2: return "Really?";
+    case 3: return "You should just give up.";
+    case 4: return "Wow, still nothing?";
+    case 5: return "Just kill yourself";
+    default: return "Your hand is bad and you should feel bad!";
   }
 }
 
-function playGame(){
-  var hand = dealHand(deck,5);
-  displayHand(hand);
-  scoreHand(hand);
+//returns a message that you won the hand.
+function winMessage(){
+  switch(Math.floor(Math.random()*5)){
+    case 1: return "You won!";
+    case 2: return "I can't believe you beat me.";
+    case 3: return "You rock.";
+    case 4: return "You're the best!";
+    case 5: return "No one can beat you.";
+    default: return "You are the champion!";
+  }
 }
 
+function refreshHand(){
+  document.getElementById('cardSpace').innerHTML="";
+}
+function playGame(){
+  var hand = dealHand(deck,5);
+  refreshHand();
+  displayHand(hand);
+  var win=scoreHand(hand);
+
+  var message;
+  if(win){
+    message = winMessage();
+  } else {
+    message = loseMessage();
+  }
+
+  var msg = document.getElementById("msg");
+  msg.innerHTML = message;
+
+}
 playGame();
+
+// var startButton = document.getElementById('start');
+// startButton.onClick = playGame();
 
 
 // //testing functions
 // var testHand = [deck[18],deck[14],deck[9],deck[40],deck[27]];
-// displayHand(testHand);
-// scoreHand(testHand);
