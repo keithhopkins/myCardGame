@@ -54,8 +54,8 @@ var deck =  [
           ];
 
 //deals a hand, functions the same way as the _.sample function
-function dealHand(array, num){
-  var arrayCopy = array.slice();
+function dealHand(hand, num){
+  var arrayCopy = hand.slice();
   if(num===undefined) {
     num = 1;
   }
@@ -68,11 +68,11 @@ function dealHand(array, num){
 }
 
 //displays the hand to the console.
-function displayHand(array, msg){
+function displayHand(hand, msg){
   var cardSpace = document.getElementById("cardSpace");
   cardSpace.innerHTML += msg + "<br>";
-  for( i in array) {
-    cardSpace.innerHTML += array[i].code;
+  for( i in hand) {
+    cardSpace.innerHTML += hand[i].code;
   }
   cardSpace.innerHTML += "<br>";
 }
@@ -116,53 +116,58 @@ function contains(array, num){
 
 //scores the hand
 //currently only checks if the hand has a pair
-function scoreHand(array) {
-  if(royalFlush(array)){
+function scoreHand(hand) {
+  if(royalFlush(hand)){
     console.log("HOLY SHIT YOU GOT A ROYAL FLUSH");
     return 9;
   }
-  if(straightFlush(array)){
+  if(straightFlush(hand)){
     console.log("You got a straight flush!");
     return 8;
   }
-  if(straight(array)){
+  if(straight(hand)){
     console.log("You got a straight!");
     return 4;
   }
-  if (flush(array)){
+  if (flush(hand)){
     console.log("You got a flush");
     return 5;
   }
-  if (fullHouse(array)){
+  if (fullHouse(hand)){
     console.log("You got a full house");
     return 6;
   }
-  if (fourOfAKind(array)){
+  if (fourOfAKind(hand)){
     console.log("You got 4 of a kind");
     return 7;
   }
-  if (threeOfAKind(array)){
+  if (threeOfAKind(hand)){
     console.log("You got 3 of a kind");
     return 3;
   }
-  if (contains2Pair(array)){
+  if (contains2Pair(hand)){
     console.log("You got 2 pair!");
     return 2;
   }
-  if (containsPair(array)) {
+  if (containsPair(hand)) {
    console.log("You got a pair!");
    return 1;
   }
-   return -1;
+   return 0;
+}
+
+//comparesScore of hands
+function compareScore(score1,score2){
+  return score1>score2;
 }
 
 //checks for a pair
-function containsPair(array){
-  for(var i=0;i<array.length;i++){
-    for(var k=0;k<array.length;k++){
+function containsPair(hand){
+  for(var i=0;i<hand.length;i++){
+    for(var k=0;k<hand.length;k++){
       //first condition checks if 2 cards in the hand have the same value
       //second condition ensures that we aren't checking the same card
-      if(array[i].weight===array[k].weight&&array[i].name!==array[k].name){
+      if(hand[i].weight===hand[k].weight&&hand[i].name!==hand[k].name){
         return true;
       }
     }
@@ -171,9 +176,9 @@ function containsPair(array){
 }
 
 //checks for 2 pair
-function contains2Pair(array){
-  var tempHand = array.slice();
-  if (containsPair(array)){//checks if the hand has a pair, if it does go and remove the pair cards
+function contains2Pair(hand){
+  var tempHand = hand.slice();
+  if (containsPair(hand)){//checks if the hand has a pair, if it does go and remove the pair cards
     var i=0;
     while(i<tempHand.length){
       for(var k=0;k<tempHand.length;k++){
@@ -197,12 +202,12 @@ function contains2Pair(array){
 }
 
 //checks for a 3 of a kind
-function threeOfAKind(array){
-  for (var i=0;i<array.length;i++){
-    for(var k=i+1;k<array.length;k++){
-      if(array[i].weight===array[k].weight&&array[i].name!==array[k].name){  //checks if 2 cards are the same
-        for (var j=k+1;j<array.length;j++){  //moves to check if any of the rest of the cards match the pair
-          if(array[i].weight===array[j].weight&&array[i].name!==array[j].name){
+function threeOfAKind(hand){
+  for (var i=0;i<hand.length;i++){
+    for(var k=i+1;k<hand.length;k++){
+      if(hand[i].weight===hand[k].weight&&hand[i].name!==hand[k].name){  //checks if 2 cards are the same
+        for (var j=k+1;j<hand.length;j++){  //moves to check if any of the rest of the cards match the pair
+          if(hand[i].weight===hand[j].weight&&hand[i].name!==hand[j].name){
             return true;
           }
         }
@@ -213,14 +218,14 @@ function threeOfAKind(array){
 }
 
 //checks for a 4 of a kind
-function fourOfAKind(array){
-  for (var i=0;i<array.length;i++){
-    for (var k=i+1;k<array.length;k++){
-      if(array[i].weight===array[k].weight&&array[i].name!==array[k].name){  //checks if 2 cards are the same
-        for (var j=k+1;j<array.length;j++){  //moves to check if any of the rest of the cards match the pair
-          if (array[i].weight===array[j].weight&&array[i].name!==array[j].name){
-            for (var p=j+1;p<array.length;p++) {  //checks to see if the remaining cards match the 3 of a kind
-              if (array[i].weight===array[p].weight&&array[i].name!==array[p].name){
+function fourOfAKind(hand){
+  for (var i=0;i<hand.length;i++){
+    for (var k=i+1;k<hand.length;k++){
+      if(hand[i].weight===hand[k].weight&&hand[i].name!==hand[k].name){  //checks if 2 cards are the same
+        for (var j=k+1;j<hand.length;j++){  //moves to check if any of the rest of the cards match the pair
+          if (hand[i].weight===hand[j].weight&&hand[i].name!==hand[j].name){
+            for (var p=j+1;p<hand.length;p++) {  //checks to see if the remaining cards match the 3 of a kind
+              if (hand[i].weight===hand[p].weight&&hand[i].name!==hand[p].name){
                 return true;
               }
             }
@@ -232,9 +237,9 @@ function fourOfAKind(array){
 }
 
 //checks for a full house
-function fullHouse(array){
-  if(threeOfAKind(array)){
-    var tempHand = array.slice();
+function fullHouse(hand){
+  if(threeOfAKind(hand)){
+    var tempHand = hand.slice();
     var i = 0;
     while (i<tempHand.length){
       var j = i+1;
@@ -263,10 +268,10 @@ function fullHouse(array){
 }
 
 //checks for a flush
-function flush(array){
-  for(var i=0;i<array.length-1;i++){
-    if(array[i].suit===array[i+1].suit){ //checks if the current card has the same suit as the next card
-      if(i===array.length-2){ //if its checking the last 2 cards returns true
+function flush(hand){
+  for(var i=0;i<hand.length-1;i++){
+    if(hand[i].suit===hand[i+1].suit){ //checks if the current card has the same suit as the next card
+      if(i===hand.length-2){ //if its checking the last 2 cards returns true
         return true;
       }
       continue;
@@ -278,14 +283,14 @@ function flush(array){
 
 //checks for a straight
 //similar structure as flush
-function straight(array){
-  var tempHand = array.slice();
-  tempHand.sort(function (a, b){return a.weight - b.weight}); //sorts array by card weight
+function straight(hand){
+  var tempHand = hand.slice();
+  tempHand.sort(function (a, b){return a.weight - b.weight}); //sorts hand by card weight
   for(var i=0;i<tempHand.length-1;i++){
     //checks if the card to the right of this card is sequetial
     //special case: if the first card is an ace and the second is a 10 it is still true
     if(tempHand[i].weight+1===tempHand[i+1].weight||(tempHand[0].weight===1&&tempHand[1].weight===10)){
-      if(i===array.length-2){
+      if(i===hand.length-2){
         return true;
       }
       continue;
@@ -296,17 +301,17 @@ function straight(array){
 }
 
 //checks for straight flush
-function straightFlush(array){
-  if (flush(array)&&straight(array)){
+function straightFlush(hand){
+  if (flush(hand)&&straight(hand)){
     return true;
   }
   return false;
 }
 
 //checks for royal flush
-function royalFlush(array){
-  if(straightFlush(array)){
-    var tempHand=array.slice();
+function royalFlush(hand){
+  if(straightFlush(hand)){
+    var tempHand=hand.slice();
     tempHand.sort(function (a, b){return a.weight - b.weight});
     if(tempHand[0].weight===1&&tempHand[1].weight===10){
       return true;
@@ -351,7 +356,6 @@ function message(num){
     case 2: return "You have 2 pair!";
     case 1: return "You have a pair!";
     case 0: return "You have a high card.";
-    case -1: return loseMessage();
     default: return "Something is wrong here.";
   }
 }
@@ -375,11 +379,13 @@ function playGame(){
   var playerScore = scoreHand(playerHand);
   var computerScore = scoreHand(computerHand);
   //message
-  var myMessage = message(playerScore);
   var messageDiv = document.getElementById("msg");
-  messageDiv.innerHTML = myMessage;
-  if(playerScore>0){
+  if(compareScore(playerScore,computerScore)){
+    var myMessage = message(playerScore);
+    messageDiv.innerHTML = myMessage;
     messageDiv.innerHTML += "<br>"+winMessage();
+  } else {
+    messageDiv.innerHTML = loseMessage();
   }
 }
 playGame();
