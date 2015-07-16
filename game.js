@@ -66,12 +66,52 @@ function dealHand(array, num){
   }
   return randArray;
 }
+
 //displays the hand to the console.
-function displayHand(array){
+function displayHand(array, msg){
   var cardSpace = document.getElementById("cardSpace");
+  cardSpace.innerHTML += msg + "<br>";
   for( i in array) {
     cardSpace.innerHTML += array[i].code;
   }
+  cardSpace.innerHTML += "<br>";
+}
+
+//displays computerHand to the page
+function displayComputer(hand){
+  var msg = "<span>Computer's hand:</span>";
+  displayHand(hand,msg);
+}
+
+//displays the players hand
+function displayPlayer(hand){
+  var msg = "<span>Your hand:</span>";
+  displayHand(hand,msg);
+}
+
+//returns the elements that are different between the arrays
+function difference(array1, array2){
+  var newArray = [];
+  for (var i=0; i<array1.length; i++){
+    if(!contains(array2,array1[i])){
+      newArray.push(array1[i]);
+    }
+  }
+  for (var i=0; i<array2.length; i++){
+      if(!contains(array1,array2[i])&&!_.contains(newArray,array2[i])){
+        newArray.push(array2[i]);
+      }
+    }
+    return newArray;
+}
+
+//checks if an array contains a value
+function contains(array, num){
+  var contains=false;
+  for(var i=0;i<array.length;i++)
+    if(array[i]===num)
+      contains=true;
+  return contains;
 }
 
 //scores the hand
@@ -315,21 +355,31 @@ function message(num){
     default: return "Something is wrong here.";
   }
 }
+
+//clears the HTML in the cardSpace element
 function refreshHand(){
   document.getElementById('cardSpace').innerHTML="";
 }
+
+//driver that runs the game
 function playGame(){
-  var hand = dealHand(deck,5);
+  //deals hands
+  var playerHand = dealHand(deck,5);
+  var tempDeck = difference(deck,playerHand);
+  var computerHand = dealHand(tempDeck,5);
+  //display hands
   refreshHand();
-  displayHand(hand);
-  var handScore=scoreHand(hand);
-
-  var message = message(handScore);
-
+  displayPlayer(playerHand);
+  displayComputer(computerHand);
+  //score hands
+  var playerScore = scoreHand(playerHand);
+  var computerScore = scoreHand(computerHand);
+  //message
+  var myMessage = message(playerScore);
   var messageDiv = document.getElementById("msg");
-  messageDiv.innerHTML = message;
-  if(win>0){
-    messageDiv.innerHTML += winMessage();
+  messageDiv.innerHTML = myMessage;
+  if(playerScore>0){
+    messageDiv.innerHTML += "<br>"+winMessage();
   }
 }
 playGame();

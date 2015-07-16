@@ -1,6 +1,9 @@
 #cardSpace {
   font-size: 50px;
 }
-/*.section {
+.section {
   text-align: center;
-}*/
+}
+span {
+  font-size: 16px;
+}
