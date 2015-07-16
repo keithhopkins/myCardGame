@@ -79,42 +79,41 @@ function displayHand(array){
 function scoreHand(array) {
   if(royalFlush(array)){
     console.log("HOLY SHIT YOU GOT A ROYAL FLUSH");
-    return true;
+    return 9;
   }
   if(straightFlush(array)){
     console.log("You got a straight flush!");
-    return true;
+    return 8;
   }
   if(straight(array)){
     console.log("You got a straight!");
-    return true;
+    return 4;
   }
   if (flush(array)){
     console.log("You got a flush");
-    return true;
+    return 5;
   }
   if (fullHouse(array)){
     console.log("You got a full house");
-    return true;
+    return 6;
   }
   if (fourOfAKind(array)){
     console.log("You got 4 of a kind");
-    return true;
+    return 7;
   }
   if (threeOfAKind(array)){
     console.log("You got 3 of a kind");
-    return true;
+    return 3;
   }
   if (contains2Pair(array)){
     console.log("You got 2 pair!");
-    return true;
+    return 2;
   }
   if (containsPair(array)) {
    console.log("You got a pair!");
-   return true;
+   return 1;
   }
-   loseMessage();
-   return false;
+   return -1;
 }
 
 //checks for a pair
@@ -299,6 +298,23 @@ function winMessage(){
   }
 }
 
+//displays a message based on the hand you received
+function message(num){
+  switch(num){
+    case 9: return "You have a Royal Flush!";
+    case 8: return "You have a Straight Flush!";
+    case 7: return "You have a 4 of a Kind!";
+    case 6: return "You have a Full House!";
+    case 5: return "You have a Flush!";
+    case 4: return "You have a Straight!";
+    case 3: return "You have a 3 of a Kind!";
+    case 2: return "You have 2 pair!";
+    case 1: return "You have a pair!";
+    case 0: return "You have a high card.";
+    case -1: return loseMessage();
+    default: return "Something is wrong here.";
+  }
+}
 function refreshHand(){
   document.getElementById('cardSpace').innerHTML="";
 }
@@ -306,18 +322,15 @@ function playGame(){
   var hand = dealHand(deck,5);
   refreshHand();
   displayHand(hand);
-  var win=scoreHand(hand);
+  var handScore=scoreHand(hand);
 
-  var message;
-  if(win){
-    message = winMessage();
-  } else {
-    message = loseMessage();
+  var message = message(handScore);
+
+  var messageDiv = document.getElementById("msg");
+  messageDiv.innerHTML = message;
+  if(win>0){
+    messageDiv.innerHTML += winMessage();
   }
-
-  var msg = document.getElementById("msg");
-  msg.innerHTML = message;
-
 }
 playGame();
 
