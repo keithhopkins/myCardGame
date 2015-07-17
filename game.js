@@ -68,25 +68,31 @@ function dealHand(hand, num){
 }
 
 //displays the hand to the console.
-function displayHand(hand, msg){
-  var cardSpace = document.getElementById("cardSpace");
-  cardSpace.innerHTML += msg + "<br>";
+function displayHand(hand,elHand,msg,elMsg){
+  elMsg.innerHTML += msg;
   for( i in hand) {
-    cardSpace.innerHTML += hand[i].code;
+    elHand.innerHTML += hand[i].code;
   }
-  cardSpace.innerHTML += "<br>";
 }
 
 //displays computerHand to the page
 function displayComputer(hand){
+  var elMsg = document.getElementsByClassName('playerName')[1];
+  var elHand = document.getElementsByClassName('hand')[1];
+  elMsg.innerHTML='';
+  elHand.innerHTML='';
   var msg = "<span>Computer's hand:</span>";
-  displayHand(hand,msg);
+  displayHand(hand,elHand,msg,elMsg);
 }
 
 //displays the players hand
 function displayPlayer(hand){
-  var msg = "<span>Your hand:</span>";
-  displayHand(hand,msg);
+  var elMsg = document.getElementsByClassName('playerName')[0];
+  var elHand = document.getElementsByClassName('hand')[0];
+  elMsg.innerHTML='';
+  elHand.innerHTML = '';
+  var msg = "Your hand:";
+  displayHand(hand,elHand,msg,elMsg);
 }
 
 //returns the elements that are different between the arrays
@@ -158,7 +164,7 @@ function scoreHand(hand) {
 
 //comparesScore of hands
 function compareScore(score1,score2){
-  return score1>score2;
+  return score1-score2;
 }
 
 //checks for a pair
@@ -325,7 +331,7 @@ function loseMessage(){
     case 1: return "You are terrible at this";
     case 2: return "Really?";
     case 3: return "You should just give up.";
-    case 4: return "Wow, still nothing?";
+    case 4: return "Neener, neener, neener.";
     case 5: return "Just kill yourself";
     default: return "Your hand is bad and you should feel bad!";
   }
@@ -344,25 +350,20 @@ function winMessage(){
 }
 
 //displays a message based on the hand you received
-function message(num){
+function handName(num){
   switch(num){
-    case 9: return "You have a Royal Flush!";
-    case 8: return "You have a Straight Flush!";
-    case 7: return "You have a 4 of a Kind!";
-    case 6: return "You have a Full House!";
-    case 5: return "You have a Flush!";
-    case 4: return "You have a Straight!";
-    case 3: return "You have a 3 of a Kind!";
-    case 2: return "You have 2 pair!";
-    case 1: return "You have a pair!";
-    case 0: return "You have a high card.";
+    case 9: return "Royal Flush!";
+    case 8: return "Straight Flush!";
+    case 7: return "4 of a Kind!";
+    case 6: return "Full House!";
+    case 5: return "Flush!";
+    case 4: return "Straight!";
+    case 3: return "3 of a Kind!";
+    case 2: return "2 pair!";
+    case 1: return "pair!";
+    case 0: return "high card.";
     default: return "Something is wrong here.";
   }
-}
-
-//clears the HTML in the cardSpace element
-function refreshHand(){
-  document.getElementById('cardSpace').innerHTML="";
 }
 
 //driver that runs the game
@@ -372,20 +373,25 @@ function playGame(){
   var tempDeck = difference(deck,playerHand);
   var computerHand = dealHand(tempDeck,5);
   //display hands
-  refreshHand();
   displayPlayer(playerHand);
   displayComputer(computerHand);
   //score hands
   var playerScore = scoreHand(playerHand);
   var computerScore = scoreHand(computerHand);
-  //message
-  var messageDiv = document.getElementById("msg");
-  if(compareScore(playerScore,computerScore)){
-    var myMessage = message(playerScore);
-    messageDiv.innerHTML = myMessage;
-    messageDiv.innerHTML += "<br>"+winMessage();
+  //displays the hand name under the respective cards
+  var playerHandName = handName(playerScore);
+  var computerHandName = handName(computerScore);
+  var handNameDiv = document.getElementsByClassName("handName");
+  handNameDiv[0].innerHTML="You have a "+playerHandName;
+  handNameDiv[1].innerHTML="Computer has a "+computerHandName;
+  //displays win/lose message
+  var messageDiv = document.getElementById('winMessage');
+  if(compareScore(playerScore,computerScore)>0){
+    messageDiv.innerHTML=winMessage(); //displays a player wins message
+  } else if (compareScore(playerScore,computerScore)===0){
+    messageDiv.innerHTML='You and the computer \"tied.\"';
   } else {
-    messageDiv.innerHTML = loseMessage();
+    messageDiv.innerHTML=loseMessage();
   }
 }
 playGame();

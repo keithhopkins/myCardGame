@@ -1,9 +1,12 @@
-#cardSpace {
-  font-size: 50px;
+.hand{
+  font-size: 100px;
 }
-.section {
+body {
   text-align: center;
 }
 span {
   font-size: 16px;
+}
+.handName {
+  padding-bottom: 10px;
 }
