@@ -4,9 +4,14 @@
 body {
   text-align: center;
 }
-span {
+.playerName {
   font-size: 16px;
 }
 .handName {
   padding-bottom: 10px;
+}
+#winMessage {
+  border: solid;
+  width: 20%;
+  margin: 0 auto; /*centers the div*/
 }

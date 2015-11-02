@@ -81,7 +81,7 @@ function displayComputer(hand){
   var elHand = document.getElementsByClassName('hand')[1];
   elMsg.innerHTML='';
   elHand.innerHTML='';
-  var msg = "<span>Computer's hand:</span>";
+  var msg = "Computer's hand:";
   displayHand(hand,elHand,msg,elMsg);
 }
 
@@ -170,10 +170,10 @@ function compareScore(score1,score2){
 //checks for a pair
 function containsPair(hand){
   for(var i=0;i<hand.length;i++){
-    for(var k=0;k<hand.length;k++){
+    for(var k=i+1;k<hand.length;k++){
       //first condition checks if 2 cards in the hand have the same value
       //second condition ensures that we aren't checking the same card
-      if(hand[i].weight===hand[k].weight&&hand[i].name!==hand[k].name){
+      if(hand[i].weight===hand[k].weight){
         return true;
       }
     }
@@ -211,9 +211,9 @@ function contains2Pair(hand){
 function threeOfAKind(hand){
   for (var i=0;i<hand.length;i++){
     for(var k=i+1;k<hand.length;k++){
-      if(hand[i].weight===hand[k].weight&&hand[i].name!==hand[k].name){  //checks if 2 cards are the same
+      if(hand[i].weight===hand[k].weight){  //checks if 2 cards are the same
         for (var j=k+1;j<hand.length;j++){  //moves to check if any of the rest of the cards match the pair
-          if(hand[i].weight===hand[j].weight&&hand[i].name!==hand[j].name){
+          if(hand[i].weight===hand[j].weight){
             return true;
           }
         }
@@ -227,11 +227,11 @@ function threeOfAKind(hand){
 function fourOfAKind(hand){
   for (var i=0;i<hand.length;i++){
     for (var k=i+1;k<hand.length;k++){
-      if(hand[i].weight===hand[k].weight&&hand[i].name!==hand[k].name){  //checks if 2 cards are the same
+      if(hand[i].weight===hand[k].weight){  //checks if 2 cards are the same
         for (var j=k+1;j<hand.length;j++){  //moves to check if any of the rest of the cards match the pair
-          if (hand[i].weight===hand[j].weight&&hand[i].name!==hand[j].name){
+          if (hand[i].weight===hand[j].weight){
             for (var p=j+1;p<hand.length;p++) {  //checks to see if the remaining cards match the 3 of a kind
-              if (hand[i].weight===hand[p].weight&&hand[i].name!==hand[p].name){
+              if (hand[i].weight===hand[p].weight){
                 return true;
               }
             }
@@ -280,7 +280,6 @@ function flush(hand){
       if(i===hand.length-2){ //if its checking the last 2 cards returns true
         return true;
       }
-      continue;
     } else { //returns false if at any point 2 cards don't have the same suit
       return false;
     }
@@ -299,7 +298,6 @@ function straight(hand){
       if(i===hand.length-2){
         return true;
       }
-      continue;
     } else {
       return false;
     }
@@ -329,7 +327,7 @@ function royalFlush(hand){
 function loseMessage(){
   switch(Math.floor(Math.random()*5)){
     case 1: return "You are terrible at this";
-    case 2: return "Really?";
+    case 2: return "Really, you think you can win with that?";
     case 3: return "You should just give up.";
     case 4: return "Neener, neener, neener.";
     case 5: return "Just kill yourself";
@@ -388,17 +386,12 @@ function playGame(){
   var messageDiv = document.getElementById('winMessage');
   if(compareScore(playerScore,computerScore)>0){
     messageDiv.innerHTML=winMessage(); //displays a player wins message
+    messageDiv.setAttribute("style","background-color: green");
   } else if (compareScore(playerScore,computerScore)===0){
     messageDiv.innerHTML='You and the computer \"tied.\"';
+    messageDiv.setAttribute("style","background-color: white");
   } else {
     messageDiv.innerHTML=loseMessage();
+    messageDiv.setAttribute("style","background-color: red");
   }
 }
-playGame();
-
-// var startButton = document.getElementById('start');
-// startButton.onClick = playGame();
-
-
-// //testing functions
-// var testHand = [deck[18],deck[14],deck[9],deck[40],deck[27]];
